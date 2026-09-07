@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Minali Bansal — Data Analytics & Visualization Portfolio" />
+  <meta name="theme-color" content="#05060a" />
+  <title>Minali Bansal — Data Analytics Portfolio</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #05060a;
+      --bg-soft: #090b12;
+      --card: rgba(14, 17, 27, 0.64);
+      --card-strong: rgba(16, 20, 32, 0.86);
+      --text: #f4f7fb;
+      --muted: #8f99ad;
+      --line: rgba(255,255,255,.09);
+      --cyan: #5ee7ff;
+      --purple: #9c7cff;
+      --emerald: #51f2b2;
+      --glow: rgba(94,231,255,.18);
+      --max: 1180px;
+      --radius: 24px;
+      --ease: cubic-bezier(.22, 1, .36, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 15% 15%, rgba(156,124,255,.10), transparent 30%),
+        radial-gradient(circle at 85% 35%, rgba(94,231,255,.07), transparent 28%),
+        var(--bg);
+      color: var(--text);
+      font-family: Inter, system-ui, sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+    ::selection { background: rgba(94,231,255,.25); color: #fff; }
+
+    #scene {
+      position: fixed;
+      inset: 0;
+      z-index: -3;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .noise {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      pointer-events: none;
+      opacity: .035;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E");
+    }
+
+    .cursor-glow {
+      position: fixed;
+      width: 340px;
+      height: 340px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: -1;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle, rgba(94,231,255,.075), transparent 65%);
+      mix-blend-mode: screen;
+    }
+
+    .container { width: min(var(--max), calc(100% - 40px)); margin: 0 auto; }
+
+    .nav-wrap {
+      position: fixed;
+      top: 16px;
+      left: 0;
+      right: 0;
+      z-index: 50;
+    }
+
+    nav {
+      width: min(980px, calc(100% - 32px));
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px 10px 18px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(6,8,14,.62);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 18px 50px rgba(0,0,0,.28);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      letter-spacing: -.04em;
+    }
+
+    .brand-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 18px var(--cyan);
+    }
+
+    .nav-links { display: flex; gap: 4px; }
+    .nav-links a {
+      padding: 8px 12px;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 13px;
+      transition: .3s var(--ease);
+    }
+    .nav-links a:hover { color: #fff; background: rgba(255,255,255,.06); }
+
+    .nav-cta {
+      padding: 9px 15px;
+      border-radius: 999px;
+      color: #041015;
+      background: var(--cyan);
+      font-size: 12px;
+      font-weight: 800;
+      box-shadow: 0 0 24px rgba(94,231,255,.18);
+    }
+
+    section { position: relative; padding: 120px 0; }
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding-top: 150px;
+      padding-bottom: 90px;
+    }
+
+    .hero-content { max-width: 980px; text-align: center; }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 11px;
+      border: 1px solid rgba(94,231,255,.18);
+      border-radius: 999px;
+      background: rgba(94,231,255,.045);
+      color: #a9effa;
+      font: 500 11px "DM Mono", monospace;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: 25px;
+    }
+    .eyebrow i {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--emerald);
+      box-shadow: 0 0 12px var(--emerald);
+      animation: pulse 1.8s infinite;
+    }
+
+    h1 {
+      font-size: clamp(54px, 9.2vw, 124px);
+      line-height: .88;
+      letter-spacing: -.075em;
+      font-weight: 800;
+      margin-bottom: 28px;
+    }
+
+    .gradient-text {
+      background: linear-gradient(100deg, #fff 10%, #bdefff 40%, #9c7cff 78%, #fff);
+      background-size: 220% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: shimmer 7s linear infinite;
+    }
+
+    .hero-role {
+      font-size: clamp(17px, 2vw, 23px);
+      color: #dce2ed;
+      margin-bottom: 14px;
+      font-weight: 600;
+    }
+
+    .hero-copy {
+      max-width: 680px;
+      margin: 0 auto 34px;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      padding: 13px 19px;
+      border-radius: 13px;
+      border: 1px solid var(--line);
+      font-size: 13px;
+      font-weight: 700;
+      transition: .35s var(--ease);
+    }
+    .btn-primary {
+      color: #031014;
+      background: linear-gradient(110deg, var(--cyan), #9df3ff);
+      border-color: transparent;
+      box-shadow: 0 0 35px rgba(94,231,255,.16);
+    }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 14px 42px rgba(94,231,255,.22); }
+    .btn-ghost { background: rgba(255,255,255,.035); color: #dfe5ef; }
+    .btn-ghost:hover { transform: translateY(-3px); background: rgba(255,255,255,.07); }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      max-width: 700px;
+      margin: 70px auto 0;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+    .stat { padding: 19px; text-align: center; }
+    .stat + .stat { border-left: 1px solid var(--line); }
+    .stat strong { display: block; font-size: 21px; }
+    .stat span { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 30px;
+      margin-bottom: 45px;
+    }
+    .section-label {
+      color: var(--cyan);
+      font: 500 11px "DM Mono", monospace;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    h2 {
+      font-size: clamp(35px, 5vw, 60px);
+      line-height: .98;
+      letter-spacing: -.055em;
+    }
+    .section-intro { max-width: 410px; color: var(--muted); font-size: 14px; }
+
+    .glass {
+      background: linear-gradient(145deg, rgba(255,255,255,.065), rgba(255,255,255,.025));
+      border: 1px solid var(--line);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 25px 80px rgba(0,0,0,.22);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: 20px;
+    }
+    .about-card { border-radius: var(--radius); padding: 34px; }
+    .about-card p { color: #aab3c5; font-size: 16px; margin-bottom: 18px; }
+    .about-card p:last-child { margin-bottom: 0; }
+
+    .data-orb {
+      min-height: 360px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+      border-radius: var(--radius);
+      padding: 28px;
+      background:
+        radial-gradient(circle at 35% 30%, rgba(94,231,255,.13), transparent 28%),
+        radial-gradient(circle at 80% 75%, rgba(156,124,255,.14), transparent 35%),
+        rgba(10,12,20,.7);
+    }
+    .orb {
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      left: 50%;
+      top: 42%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, rgba(255,255,255,.55), rgba(94,231,255,.12) 25%, rgba(156,124,255,.12) 48%, transparent 70%);
+      box-shadow: 0 0 80px rgba(94,231,255,.14);
+      animation: float 5s ease-in-out infinite;
+    }
+    .orb-ring {
+      position: absolute;
+      width: 260px; height: 100px;
+      left: 50%; top: 42%;
+      transform: translate(-50%,-50%) rotate(-18deg);
+      border: 1px solid rgba(94,231,255,.28);
+      border-radius: 50%;
+      animation: orbit 8s linear infinite;
+    }
+    .orb-ring.two { width: 320px; height: 130px; transform: translate(-50%,-50%) rotate(48deg); border-color: rgba(156,124,255,.22); animation-duration: 11s; animation-direction: reverse; }
+    .data-caption { position: relative; z-index: 2; }
+    .data-caption strong { font-size: 26px; display: block; }
+    .data-caption span { color: var(--muted); font: 12px "DM Mono", monospace; }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 13px;
+    }
+    .skill-card {
+      min-height: 180px;
+      padding: 22px;
+      border-radius: 20px;
+      transition: .4s var(--ease);
+      position: relative;
+      overflow: hidden;
+    }
+    .skill-card::after {
+      content: "";
+      position: absolute;
+      width: 120px; height: 120px;
+      right: -60px; top: -60px;
+      border-radius: 50%;
+      background: var(--accent, var(--cyan));
+      filter: blur(55px);
+      opacity: .12;
+      transition: .4s;
+    }
+    .skill-card:hover { transform: translateY(-7px); border-color: rgba(255,255,255,.16); }
+    .skill-card:hover::after { opacity: .24; }
+    .skill-num { font: 11px "DM Mono", monospace; color: var(--accent, var(--cyan)); }
+    .skill-card h3 { margin: 34px 0 8px; font-size: 16px; }
+    .skill-card p { color: var(--muted); font-size: 12px; line-height: 1.55; }
+
+    .timeline { position: relative; }
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 17px;
+      top: 12px;
+      bottom: 12px;
+      width: 1px;
+      background: linear-gradient(var(--cyan), rgba(255,255,255,.06), var(--purple));
+    }
+    .timeline-item { position: relative; padding-left: 62px; margin-bottom: 24px; }
+    .timeline-dot {
+      position: absolute;
+      left: 11px; top: 23px;
+      width: 13px; height: 13px;
+      border-radius: 50%;
+      background: #070a10;
+      border: 2px solid var(--cyan);
+      box-shadow: 0 0 16px rgba(94,231,255,.5);
+    }
+    .timeline-card {
+      padding: 26px;
+      border-radius: 20px;
+      transition: .35s var(--ease);
+    }
+    .timeline-card:hover { transform: translateX(6px); border-color: rgba(94,231,255,.2); }
+    .meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      flex-wrap: wrap;
+      color: var(--cyan);
+      font: 11px "DM Mono", monospace;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      margin-bottom: 10px;
+    }
+    .timeline-card h3 { font-size: 19px; margin-bottom: 10px; }
+    .timeline-card p { color: var(--muted); font-size: 13px; max-width: 800px; }
+
+    .projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+    .project {
+      min-height: 320px;
+      border-radius: 22px;
+      padding: 25px;
+      position: relative;
+      overflow: hidden;
+      transition: .45s var(--ease);
+      display: flex;
+      flex-direction: column;
+    }
+    .project:hover { transform: translateY(-8px) rotateX(1deg); border-color: rgba(255,255,255,.17); }
+    .project-visual {
+      height: 125px;
+      margin: -25px -25px 23px;
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+    .bar-chart { position: absolute; bottom: 18px; left: 22px; right: 22px; display: flex; align-items: end; gap: 7px; height: 78px; }
+    .bar-chart i {
+      flex: 1; height: var(--h);
+      border-radius: 4px 4px 1px 1px;
+      background: linear-gradient(to top, rgba(94,231,255,.12), rgba(94,231,255,.8));
+      box-shadow: 0 0 15px rgba(94,231,255,.09);
+      animation: bars 3s ease-in-out infinite alternate;
+    }
+    .project:nth-child(2) .bar-chart i { background: linear-gradient(to top, rgba(156,124,255,.12), rgba(156,124,255,.8)); }
+    .project:nth-child(3) .bar-chart i { background: linear-gradient(to top, rgba(81,242,178,.12), rgba(81,242,178,.8)); }
+    .project-tag {
+      display: inline-block;
+      width: max-content;
+      padding: 5px 8px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      color: #aab3c5;
+      font: 10px "DM Mono", monospace;
+      margin-bottom: 13px;
+    }
+    .project h3 { font-size: 17px; margin-bottom: 9px; }
+    .project p { color: var(--muted); font-size: 12px; line-height: 1.6; margin-bottom: 20px; }
+    .project .tools { margin-top: auto; color: #cad1dd; font: 10px "DM Mono", monospace; }
+
+    .certs {
+      margin-top: 70px;
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+      gap: 10px;
+    }
+    .cert {
+      padding: 17px;
+      border-radius: 16px;
+      color: #c4ccda;
+      font-size: 12px;
+    }
+    .cert strong { display: block; color: #fff; margin-bottom: 4px; }
+    .cert span { color: var(--muted); font-size: 10px; font-family: "DM Mono", monospace; }
+
+    .contact {
+      padding-bottom: 70px;
+    }
+    .contact-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 30px;
+      padding: clamp(28px, 6vw, 70px);
+      text-align: center;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(94,231,255,.11), transparent 38%),
+        radial-gradient(circle at 85% 90%, rgba(156,124,255,.12), transparent 35%),
+        rgba(10,12,19,.75);
+    }
+    .contact-card h2 { max-width: 750px; margin: auto auto 16px; }
+    .contact-card p { color: var(--muted); max-width: 600px; margin: 0 auto 27px; }
+    .contact-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 9px; }
+    .contact-link {
+      padding: 11px 14px;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: rgba(255,255,255,.035);
+      color: #d9dfeb;
+      font-size: 12px;
+      transition: .3s;
+    }
+    .contact-link:hover { border-color: rgba(94,231,255,.35); color: var(--cyan); transform: translateY(-2px); }
+
+    footer {
+      width: min(var(--max), calc(100% - 40px));
+      margin: auto;
+      padding: 25px 0 35px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      color: #697386;
+      font: 10px "DM Mono", monospace;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(25px);
+      transition: opacity .8s var(--ease), transform .8s var(--ease);
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @keyframes pulse { 50% { opacity: .35; transform: scale(.65); } }
+    @keyframes shimmer { to { background-position: 220% center; } }
+    @keyframes float { 50% { transform: translate(-50%, calc(-50% - 14px)); } }
+    @keyframes orbit { to { transform: translate(-50%,-50%) rotate(342deg); } }
+    @keyframes bars { to { transform: scaleY(.82); transform-origin: bottom; } }
+
+    @media (max-width: 900px) {
+      .skills-grid { grid-template-columns: repeat(2,1fr); }
+      .projects-grid { grid-template-columns: 1fr; }
+      .project { min-height: 280px; }
+      .certs { grid-template-columns: repeat(2,1fr); }
+      .about-grid { grid-template-columns: 1fr; }
+      .data-orb { min-height: 280px; }
+    }
+
+    @media (max-width: 650px) {
+      .container { width: min(var(--max), calc(100% - 24px)); }
+      nav { width: calc(100% - 20px); }
+      .nav-links { display: none; }
+      section { padding: 85px 0; }
+      .hero { min-height: 100svh; padding-top: 120px; }
+      .hero-stats { grid-template-columns: 1fr; margin-top: 45px; }
+      .stat + .stat { border-left: 0; border-top: 1px solid var(--line); }
+      .section-head { display: block; }
+      .section-intro { margin-top: 14px; }
+      .skills-grid, .certs { grid-template-columns: 1fr; }
+      .timeline-card { padding: 21px; }
+      .timeline-item { padding-left: 48px; }
+      .timeline::before { left: 12px; }
+      .timeline-dot { left: 6px; }
+      footer { display: block; }
+      footer span { display: block; margin-top: 7px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="scene" aria-hidden="true"></canvas>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+
+  <header class="nav-wrap">
+    <nav>
+      <a class="brand" href="#top" aria-label="Minali Bansal home">
+        <span class="brand-dot"></span>
+        <span>MB / DATA</span>
+      </a>
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#experience">Experience</a>
+        <a href="#projects">Projects</a>
+      </div>
+      <a class="nav-cta" href="#contact">Let's connect ↗</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-content reveal">
+        <div class="eyebrow"><i></i> Data • Analytics • Visualization</div>
+        <h1><span class="gradient-text">Minali<br />Bansal.</span></h1>
+        <p class="hero-role">Data Analytics & Visualization Professional</p>
+        <p class="hero-copy">
+          Turning raw business data into clear dashboards, useful KPIs and visual stories
+          that make complex information easier to understand and act on.
+        </p>
+        <div class="actions">
+          <a class="btn btn-primary" href="#projects">Explore my work <span>↓</span></a>
+          <a class="btn btn-ghost" href="#contact">Get in touch <span>↗</span></a>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat"><strong>Power BI</strong><span>Data visualization</span></div>
+          <div class="stat"><strong>Advanced Excel</strong><span>Dashboards & analysis</span></div>
+          <div class="stat"><strong>Business Focus</strong><span>KPIs & reporting</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <div class="section-label">01 / About</div>
+            <h2>Making data<br /><span class="gradient-text">make sense.</span></h2>
+          </div>
+          <p class="section-intro">
+            A commerce graduate focused on data modelling, reporting accuracy,
+            visualization and practical business analytics.
+          </p>
+        </div>
+
+        <div class="about-grid">
+          <article class="about-card glass reveal">
+            <p>
+              I work at the intersection of business and data, transforming raw datasets
+              into dashboards and visual reports that make performance easier to see and understand.
+            </p>
+            <p>
+              My project work spans sales analysis, retail inventory and coffee sales,
+              with hands-on use of Power BI, Excel, Pivot Tables, Slicers and custom visualizations.
+            </p>
+            <p>
+              Through virtual internships with Tata Group, PepsiCo and Microsoft Elevate,
+              I have applied analytics and visual storytelling to practical business scenarios.
+            </p>
+          </article>
+
+          <div class="data-orb glass reveal" aria-hidden="true">
+            <div class="orb"></div>
+            <div class="orb-ring"></div>
+            <div class="orb-ring two"></div>
+            <div class="data-caption">
+              <strong>Raw → Insight</strong>
+              <span>MODELLING / VISUALIZATION / STORYTELLING</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <div class="section-label">02 / Expertise</div>
+            <h2>Tools I use to<br /><span class="gradient-text">build clarity.</span></h2>
+          </div>
+          <p class="section-intro">
+            A practical toolkit across analytics, ERP, presentation, documentation and professional communication.
+          </p>
+        </div>
+
+        <div class="skills-grid">
+          <article class="skill-card glass reveal" style="--accent: var(--cyan)">
+            <span class="skill-num">01</span>
+            <h3>Power BI</h3>
+            <p>Data modelling, visualization, interactive dashboards, KPIs and visual reporting.</p>
+          </article>
+          <article class="skill-card glass reveal" style="--accent: var(--purple)">
+            <span class="skill-num">02</span>
+            <h3>MS Excel</h3>
+            <p>Advanced Excel, Pivot Tables, Slicers, custom dashboards and business analysis.</p>
+          </article>
+          <article class="skill-card glass reveal" style="--accent: var(--emerald)">
+            <span class="skill-num">03</span>
+            <h3>Tally Prime</h3>
+            <p>GST and inventory reporting with a focus on accurate financial documentation.</p>
+          </article>
+          <article class="skill-card glass reveal" style="--accent: #d9a7ff">
+            <span class="skill-num">04</span>
+            <h3>Visual Storytelling</h3>
+            <p>Canva and PowerPoint for presenting analytics and market findings clearly.</p>
+          </article>
+          <article class="skill-card glass reveal" style="--accent: var(--cyan)">
+            <span class="skill-num">05</span>
+            <h3>Documentation</h3>
+            <p>MS Word, professional drafting and SOP-oriented documentation.</p>
+          </article>
+          <article class="skill-card glass reveal" style="--accent: var(--purple)">
+            <span class="skill-num">06</span>
+            <h3>Analytical Thinking</h3>
+            <p>Identifying trends, simplifying complex information and focusing on meaningful metrics.</p>
+          </article>
+          <article class="skill-card glass reveal" style="--accent: var(--emerald)">
+            <span class="skill-num">07</span>
+            <h3>Data Accuracy</h3>
+            <p>Attention to reliable reporting and clean, decision-ready business information.</p>
+          </article>
+          <article class="skill-card glass reveal" style="--accent: #d9a7ff">
+            <span class="skill-num">08</span>
+            <h3>Business English</h3>
+            <p>Clear professional communication for reporting, presentations and stakeholder-facing work.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="experience">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <div class="section-label">03 / Experience</div>
+            <h2>Where I've<br /><span class="gradient-text">applied it.</span></h2>
+          </div>
+          <p class="section-intro">
+            Internship experiences focused on dashboards, market analysis and business reporting.
+          </p>
+        </div>
+
+        <div class="timeline">
+          <article class="timeline-item reveal">
+            <span class="timeline-dot"></span>
+            <div class="timeline-card glass">
+              <div class="meta"><span>Feb 2026 — Mar 2026</span><span>AICTE</span></div>
+              <h3>Microsoft Elevate — Power BI Virtual Internship</h3>
+              <p>
+                Developed interactive Power BI dashboards to track key business KPIs,
+                transforming raw data into visual reports for executive decision-making.
+                Managed end-to-end data visualization and analysis to identify trends and
+                improve reporting accuracy for business applications.
+              </p>
+            </div>
+          </article>
+
+          <article class="timeline-item reveal">
+            <span class="timeline-dot"></span>
+            <div class="timeline-card glass">
+              <div class="meta"><span>July 2025</span><span>Forage</span></div>
+              <h3>Tata Group — Data Visualization Virtual Internship</h3>
+              <p>
+                Developed interactive Power BI dashboards to transform raw datasets into
+                clear visual narratives for strategic planning. Identified and visualized
+                key performance metrics to simplify complex information for stakeholders.
+              </p>
+            </div>
+          </article>
+
+          <article class="timeline-item reveal">
+            <span class="timeline-dot"></span>
+            <div class="timeline-card glass">
+              <div class="meta"><span>June 2025</span><span>Internshala</span></div>
+              <h3>PepsiCo — Pep Sales Star Micro-Internship</h3>
+              <p>
+                Audited product displays and inventory across local retail stores to provide
+                detailed market reports. Analyzed retail data and used Canva to present
+                analytics and market monitoring findings clearly to the team.
+              </p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <div class="section-label">04 / Selected Work</div>
+            <h2>Dashboards built<br /><span class="gradient-text">from raw data.</span></h2>
+          </div>
+          <p class="section-intro">
+            Hands-on projects designed to turn messy datasets into focused, interactive business views.
+          </p>
+        </div>
+
+        <div class="projects-grid">
+          <article class="project glass reveal">
+            <div class="project-visual">
+              <div class="bar-chart">
+                <i style="--h:38%"></i><i style="--h:58%"></i><i style="--h:44%"></i>
+                <i style="--h:76%"></i><i style="--h:63%"></i><i style="--h:91%"></i>
+                <i style="--h:72%"></i><i style="--h:100%"></i>
+              </div>
+            </div>
+            <span class="project-tag">EXCEL / SALES ANALYSIS</span>
+            <h3>Supermarket Sales Analysis Dashboard</h3>
+            <p>
+              Built from raw data with charts and visuals from scratch. Pivot Tables and
+              interactive Slicers track KPIs such as top-selling products and peak sales hours.
+            </p>
+            <div class="tools">PIVOT TABLES · SLICERS · KPI TRACKING</div>
+          </article>
+
+          <article class="project glass reveal">
+            <div class="project-visual">
+              <div class="bar-chart">
+                <i style="--h:82%"></i><i style="--h:55%"></i><i style="--h:70%"></i>
+                <i style="--h:42%"></i><i style="--h:88%"></i><i style="--h:61%"></i>
+                <i style="--h:96%"></i><i style="--h:74%"></i>
+              </div>
+            </div>
+            <span class="project-tag">EXCEL / INVENTORY MIS</span>
+            <h3>Retail Inventory MIS Dashboard</h3>
+            <p>
+              Engineered from raw data to automate and simplify stock tracking, with custom
+              visualizations and monitoring KPIs for turnover and stock levels.
+            </p>
+            <div class="tools">PIVOT TABLES · SLICERS · STOCK MONITORING</div>
+          </article>
+
+          <article class="project glass reveal">
+            <div class="project-visual">
+              <div class="bar-chart">
+                <i style="--h:48%"></i><i style="--h:72%"></i><i style="--h:57%"></i>
+                <i style="--h:94%"></i><i style="--h:67%"></i><i style="--h:82%"></i>
+                <i style="--h:53%"></i><i style="--h:100%"></i>
+              </div>
+            </div>
+            <span class="project-tag">POWER BI / COFFEE SALES</span>
+            <h3>Coffee Sales Performance Dashboard</h3>
+            <p>
+              Developed a dynamic Power BI report with custom visuals and interactive KPIs,
+              making top-selling products and revenue trends easy to identify.
+            </p>
+            <div class="tools">POWER BI · SLICERS · REVENUE TRENDS</div>
+          </article>
+        </div>
+
+        <div class="certs">
+          <div class="cert glass reveal"><strong>Microsoft Power BI</strong><span>Infosys Springboard · Dec 2025</span></div>
+          <div class="cert glass reveal"><strong>AI for Beginners</strong><span>HP LIFE · July 2025</span></div>
+          <div class="cert glass reveal"><strong>Introduction to MS Excel</strong><span>Simplilearn (SkillUp) · Apr 2025</span></div>
+          <div class="cert glass reveal"><strong>Tally Bookkeeper Professional</strong><span>Coursera / Tally Education · Dec 2025</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="contact">
+      <div class="container">
+        <div class="contact-card glass reveal">
+          <div class="section-label">05 / Contact</div>
+          <h2>Let's turn your data<br /><span class="gradient-text">into a story.</span></h2>
+          <p>
+            Open to conversations around analytics, dashboards, reporting and opportunities
+            where data can create clearer business decisions.
+          </p>
+          <div class="contact-links">
+            <a class="contact-link" href="mailto:bminali2006@gmail.com">✉ Email</a>
+            <a class="contact-link" href="tel:+919516994936">☎ +91 95169 94936</a>
+            <a class="contact-link" href="https://www.linkedin.com/in/minali-bansal-a4857a254" target="_blank" rel="noopener noreferrer">in LinkedIn ↗</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>© <span id="year"></span> Minali Bansal</span>
+    <span>DATA / ANALYTICS / VISUALIZATION</span>
+  </footer>
+
+  <!-- Three.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+
+  <script>
+    (() => {
+      "use strict";
+
+      // ---------- Small UI interactions ----------
+      document.getElementById("year").textContent = new Date().getFullYear();
+
+      const glow = document.getElementById("cursorGlow");
+      let mx = window.innerWidth / 2, my = window.innerHeight / 2;
+      let gx = mx, gy = my;
+
+      window.addEventListener("pointermove", (e) => {
+        mx = e.clientX;
+        my = e.clientY;
+      }, { passive: true });
+
+      function animateGlow() {
+        gx += (mx - gx) * 0.08;
+        gy += (my - gy) * 0.08;
+        glow.style.left = gx + "px";
+        glow.style.top = gy + "px";
+        requestAnimationFrame(animateGlow);
+      }
+      animateGlow();
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+
+      document.querySelectorAll(".reveal").forEach((el, i) => {
+        el.style.transitionDelay = `${Math.min(i % 4, 3) * 70}ms`;
+        observer.observe(el);
+      });
+
+      // ---------- Three.js animated background ----------
+      const canvas = document.getElementById("scene");
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      if (window.THREE && !reduced) {
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x05060a, 0.035);
+
+        const camera = new THREE.PerspectiveCamera(58, innerWidth / innerHeight, 0.1, 100);
+        camera.position.set(0, 0, 12);
+
+        const renderer = new THREE.WebGLRenderer({
+          canvas,
+          antialias: true,
+          alpha: true,
+          powerPreference: "high-performance"
+        });
+        renderer.setPixelRatio(Math.min(devicePixelRatio, 1.8));
+        renderer.setSize(innerWidth, innerHeight);
+
+        const group = new THREE.Group();
+        scene.add(group);
+
+        // Particles
+        const particleCount = Math.min(1300, Math.floor((innerWidth * innerHeight) / 850));
+        const positions = new Float32Array(particleCount * 3);
+        const sizes = new Float32Array(particleCount);
+
+        for (let i = 0; i < particleCount; i++) {
+          const i3 = i * 3;
+          positions[i3] = (Math.random() - 0.5) * 28;
+          positions[i3 + 1] = (Math.random() - 0.5) * 18;
+          positions[i3 + 2] = (Math.random() - 0.5) * 18;
+          sizes[i] = Math.random() * 2 + .4;
+        }
+
+        const pGeo = new THREE.BufferGeometry();
+        pGeo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+        pGeo.setAttribute("size", new THREE.BufferAttribute(sizes, 1));
+
+        const pMat = new THREE.PointsMaterial({
+          color: 0x78eaff,
+          size: 0.035,
+          transparent: true,
+          opacity: 0.52,
+          depthWrite: false,
+          blending: THREE.AdditiveBlending
+        });
+
+        const particles = new THREE.Points(pGeo, pMat);
+        group.add(particles);
+
+        // Floating wireframe geometry
+        const shapes = [];
+        const geometries = [
+          new THREE.IcosahedronGeometry(1.35, 1),
+          new THREE.OctahedronGeometry(1.05, 1),
+          new THREE.TorusGeometry(1.15, .025, 12, 80)
+        ];
+
+        const colors = [0x5ee7ff, 0x9c7cff, 0x51f2b2];
+
+        for (let i = 0; i < 9; i++) {
+          const geo = geometries[i % geometries.length].clone();
+          const mat = new THREE.MeshBasicMaterial({
+            color: colors[i % colors.length],
+            wireframe: true,
+            transparent: true,
+            opacity: 0.11 + (i % 3) * 0.025
+          });
+
+          const mesh = new THREE.Mesh(geo, mat);
+          mesh.position.set(
+            (Math.random() - .5) * 19,
+            (Math.random() - .5) * 11,
+            (Math.random() - .5) * 9
+          );
+          const s = .45 + Math.random() * .9;
+          mesh.scale.setScalar(s);
+          mesh.rotation.set(Math.random() * 3, Math.random() * 3, Math.random() * 3);
+          mesh.userData = {
+            rx: (.0008 + Math.random() * .0015) * (Math.random() > .5 ? 1 : -1),
+            ry: (.0008 + Math.random() * .0018) * (Math.random() > .5 ? 1 : -1),
+            baseX: mesh.position.x,
+            baseY: mesh.position.y,
+            phase: Math.random() * Math.PI * 2
+          };
+          group.add(mesh);
+          shapes.push(mesh);
+        }
+
+        // Subtle perspective grid
+        const grid = new THREE.GridHelper(34, 34, 0x5ee7ff, 0x243044);
+        grid.position.y = -7;
+        grid.rotation.x = 0;
+        grid.material.transparent = true;
+        grid.material.opacity = 0.075;
+        scene.add(grid);
+
+        const mouse = { x: 0, y: 0 };
+        const target = { x: 0, y: 0 };
+
+        window.addEventListener("pointermove", (e) => {
+          target.x = (e.clientX / innerWidth - .5) * 2;
+          target.y = (e.clientY / innerHeight - .5) * 2;
+        }, { passive: true });
+
+        const clock = new THREE.Clock();
+
+        function render() {
+          const t = clock.getElapsedTime();
+
+          mouse.x += (target.x - mouse.x) * .025;
+          mouse.y += (target.y - mouse.y) * .025;
+
+          group.rotation.y += (mouse.x * .0009);
+          group.rotation.x += (-mouse.y * .0006);
+
+          particles.rotation.y = t * .006;
+          particles.rotation.x = Math.sin(t * .08) * .015;
+
+          shapes.forEach((m, i) => {
+            m.rotation.x += m.userData.rx;
+            m.rotation.y += m.userData.ry;
+            m.position.x = m.userData.baseX + Math.sin(t * .18 + m.userData.phase) * .13;
+            m.position.y = m.userData.baseY + Math.cos(t * .15 + m.userData.phase) * .12;
+          });
+
+          grid.position.z = ((t * .035) % 1) - 0.5;
+
+          camera.position.x += (mouse.x * .45 - camera.position.x) * .02;
+          camera.position.y += (-mouse.y * .25 - camera.position.y) * .02;
+          camera.lookAt(0, 0, 0);
+
+          renderer.render(scene, camera);
+          requestAnimationFrame(render);
+        }
+        render();
+
+        window.addEventListener("resize", () => {
+          camera.aspect = innerWidth / innerHeight;
+          camera.updateProjectionMatrix();
+          renderer.setPixelRatio(Math.min(devicePixelRatio, 1.8));
+          renderer.setSize(innerWidth, innerHeight);
+        });
+      } else {
+        canvas.style.display = "none";
+      }
+    })();
+  </script>
+</body>
+</html>
